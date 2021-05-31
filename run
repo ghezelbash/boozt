@@ -1,0 +1,26 @@
+<?php
+
+use App\Commands\DatabaseMigrateCommand;
+
+require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/app/bootstrap.php';
+
+$app = new Bootstrap();
+
+$commandArray = [
+    'database:migrate' => DatabaseMigrateCommand::class
+];
+
+if (isset($argv[1]) == false) {
+    echo "Available Commands: \n**********************\n";
+    foreach ($commandArray as $command => $value) {
+        echo $command . "\n";
+    }
+    return;
+}
+
+if (array_key_exists($argv[1], $commandArray)) {
+    (new $commandArray[$argv[1]])->runner();
+} else {
+    echo "\e[0;30;41m!Unsupported Command!\e[0m\n";
+}
